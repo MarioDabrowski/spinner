@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spinner</title>
+  <link href="css/screen.css" rel="stylesheet">
+</head>
+<body>
+  <div class="spinner-wrapper">
+    <div class="spinner__background"></div>
+    <div class="spinner__outline">
+      <div class="spinner__outline__center"></div>
+    </div>
+
+    <div class="spinner">
+      <div class="spinner__tab step-0">
+        <div class="spinner__tab__inner">
+          Hidden Tab
+        </div>
+      </div>
+      <div class="spinner__tab step-1">
+        <div class="spinner__tab__inner">
+          Something Else
+        </div>
+      </div>
+      <div class="spinner__tab step-2">
+        <div class="spinner__tab__inner">
+          Perky Priest
+        </div>
+      </div>
+      <div class="spinner__tab step-3">
+        <div class="spinner__tab__inner">
+          Huffy Hunter
+        </div>
+      </div>
+      <div class="spinner__tab step-4">
+        <div class="spinner__tab__inner">
+          Diamond League Player
+        </div>
+      </div>
+      <div class="spinner__tab step-5">
+        <div class="spinner__tab__inner">
+          Worthy Opponent
+        </div>
+      </div>
+      <div class="spinner__tab step-6">
+        <div class="spinner__tab__inner">
+          Rouged Up Rouge
+        </div>
+      </div>
+      <div class="spinner__tab step-7">
+        <div class="spinner__tab__inner">
+          Mopey Mage
+        </div>
+      </div>
+      <div class="spinner__tab step-8">
+        <div class="spinner__tab__inner">
+          Your Old Roomate
+        </div>
+      </div>
+      <div class="spinner__tab step-9">
+        <div class="spinner__tab__inner">
+          Something else
+        </div>
+      </div>
+      <div class="spinner__tab step-10">
+        <div class="spinner__tab__inner">
+          Last item
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-down">Next</button>
+      <button class="btn btn-play">Play</button>
+    </div>
+  </div>
+
+  <script>
+    var tabs = document.querySelectorAll('.spinner__tab');
+    var btnDown = document.querySelector('.btn-down');
+    var btnPlay = document.querySelector('.btn-play');
+    var spinner = document.querySelector('.spinner');
+
+    btnDown.addEventListener('click', clickListener);
+    btnPlay.addEventListener('click', playSpinner);
+
+    function clickListener() {
+      btnDown.setAttribute('disabled', 'disabled');
+
+      spinner.addEventListener('transitionend', finishedSpinning);
+
+      for (var i = 0; i < tabs.length; i++) {
+        var currentClass = tabs[i].classList[1];
+        var nextClass = (parseInt(currentClass.split('-')[1]) + 1);
+
+        if (tabs[i].classList.contains('step-10')) {
+          tabs[i].classList.remove('step-10');
+          tabs[i].classList.add('step-0');
+        } else {
+          tabs[i].addEventListener('transitionend', transitionEnd);
+          tabs[i].elem = tabs[i];
+          tabs[i].currentClass = currentClass;
+          tabs[i].classList.add('step-' + nextClass);
+        }
+
+        spinner.classList.add('spinner--down');
+      }
+    }
+
+    function transitionEnd(e) {
+      e.target.elem.classList.remove(e.target.elem.currentClass);
+      e.target.elem.removeEventListener('transitionend', transitionEnd);
+    }
+
+    function finishedSpinning() {
+      btnDown.removeAttribute('disabled');
+      spinner.removeEventListener('transitionend', finishedSpinning);
+    }
+
+    function playSpinner() {
+      setInterval(function() {
+        btnDown.click();
+      }, 400);
+    }
+  </script>
+</body>
+</html>
